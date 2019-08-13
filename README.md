@@ -1,72 +1,44 @@
-## Introduction
+# 服务于Xml Orm框架的C#自动生成代码工具
 
-This is a simple pipeline example for a .NET Core application, showing just
-how easy it is to get up and running with .NET development using GitLab.
+此工具用于自动生成服务于Xml Orm框架的C#代码，生成的代码需要引用dotnet-core-dpz2及dotnet-core-dpz2-db两个包（可从Nuget下载）。
 
-# Reference links
+## XML文件定义示例
 
-- [GitLab CI Documentation](https://docs.gitlab.com/ee/ci/)
-- [.NET Hello World tutorial](https://dotnet.microsoft.com/learn/dotnet/hello-world-tutorial/)
+Xml Orm框架(简称Xorm框架)主要由XML主定义文件和XML表定义文件组成。
 
-If you're new to .NET you'll want to check out the tutorial, but if you're
-already a seasoned developer considering building your own .NET app with GitLab,
-this should all look very familiar.
+主定义XML包括平台分类、表标识符、表版本和表定义地址。
 
-## What's contained in this project
-
-The root of the repository contains the out of the `dotnet new console` command,
-which generates a new console application that just prints out "Hello, World."
-It's a simple example, but great for demonstrating how easy GitLab CI is to
-use with .NET. Check out the `Program.cs` and `dotnetcore.csproj` files to
-see how these work.
-
-In addition to the .NET Core content, there is a ready-to-go `.gitignore` file
-sourced from the the .NET Core [.gitignore](https://github.com/dotnet/core/blob/master/.gitignore). This
-will help keep your repository clean of build files and other configuration.
-
-Finally, the `.gitlab-ci.yml` contains the configuration needed for GitLab
-to build your code. Let's take a look, section by section.
-
-First, we note that we want to use the official Microsoft .NET SDK image
-to build our project.
+主定义XML文件格式(示例含Activity平台分类的ActivityNew表，Aos平台的AosObjects、AosAuthorize表)：
 
 ```
-image: microsoft/dotnet:latest
+<database version="1.01.1711.002">
+	<platform name="Activity" title="活动信息">
+		<table name="ActivityNew" version="1.0.1810.2" path="/Activity/ActivityNew.xml"/>
+	</platform>
+	<platform name="Aos" title="框架数据库">
+		<table name="AosObjects" version="2016.1102" path="/Aos/AosObjects.xml"/>
+		<table name="AosAuthorize" version="1.5.1904.16" path="/Aos/AosAuthorize.xml"/>
+	</platform>
+</database>
 ```
 
-We're defining two stages here: `build`, and `test`. As your project grows
-in complexity you can add more of these.
+表定义XML包括表名称、表描述信息、表字段的定义
+
+表定义XML文件格式(示例为Activity平台分类的ActivityNew表)：
 
 ```
-stages:
-    - build
-    - test
+<table name="ActivityNew" title="最新活动" description="最新活动">
+	<field name="Title" title="标题">
+		<data type="string" size="50" float="0"/>
+	</field>
+	<field name="ImgPath" title="图片地址">
+		<data type="string" size="500" float="0"/>
+	</field>
+	<field name="Description" title="描述">
+		<data type="text" size="0" float="0"/>
+	</field>
+	<field name="Index" title="排序索引">
+		<data type="int" size="0" float="0"/>
+	</field>
+</table>
 ```
-
-Next, we define our build job which simply runs the `dotnet build` command and
-identifies the `bin` folder as the output directory. Anything in the `bin` folder
-will be automatically handed off to future stages, and is also downloadable through
-the web UI.
-
-```
-build:
-    stage: build
-    script:
-        - "dotnet build"
-    artifacts:
-      paths:
-        - bin/
-```
-
-Similar to the build step, we get our test output simply by running `dotnet test`.
-
-```
-test:
-    stage: test
-    script: 
-        - "dotnet test"
-```
-
-This should be enough to get you started. There are many, many powerful options 
-for your `.gitlab-ci.yml`. You can read about them in our documentation 
-[here](https://docs.gitlab.com/ee/ci/yaml/).
