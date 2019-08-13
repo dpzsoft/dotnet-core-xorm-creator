@@ -133,7 +133,7 @@ namespace Creator {
                     file.AppendLine($"    /// <summary>");
                     file.AppendLine($"    /// Orm表格信息集合");
                     file.AppendLine($"    /// </summary>");
-                    file.AppendLine($"    public class Tables : dpz2.Object {{");
+                    file.AppendLine($"    public class Tables : dpz2.db.OrmTables {{");
                     file.AppendLine($"");
 
                     // 获取所有的platform
@@ -254,7 +254,7 @@ namespace Creator {
                     file.AppendLine($"    /// <summary>");
                     file.AppendLine($"    /// Orm表格信息集合");
                     file.AppendLine($"    /// </summary>");
-                    file.AppendLine($"    public class Fields : dpz2.Object {{");
+                    file.AppendLine($"    public class Fields : dpz2.db.OrmFields {{");
                     file.AppendLine($"");
                     file.AppendLine($"        // 空表对象");
                     file.AppendLine($"        private dpz2.db.SqlUnits.Table _table = new dpz2.db.SqlUnits.Table(\"\");");
