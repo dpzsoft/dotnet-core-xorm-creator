@@ -177,7 +177,7 @@ namespace Creator {
                     file.AppendLine($"        /// <summary>");
                     file.AppendLine($"        /// 根据名称获取表格定义");
                     file.AppendLine($"        /// </summary>");
-                    file.AppendLine($"        public dpz2.db.SqlUnits.Table this[string name] {{");
+                    file.AppendLine($"        public dpz2.db.OrmTable this[string name] {{");
                     file.AppendLine($"            get {{");
                     file.AppendLine($"                switch (name) {{");
                     file.AppendLine($"");

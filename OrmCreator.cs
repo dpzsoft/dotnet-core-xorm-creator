@@ -64,7 +64,7 @@ namespace Creator {
                     file.AppendLine($"    /// {xmlTable.Attr["description"]}");
                     file.AppendLine($"    /// Version {tableVersion}");
                     file.AppendLine($"    /// </summary>");
-                    file.AppendLine($"    public class {tableName} : dpz2.db.SqlUnits.Table {{");
+                    file.AppendLine($"    public class {tableName} : dpz2.db.OrmTable {{");
                     file.AppendLine($"");
 
                     // 输出行操作类信息
@@ -179,6 +179,22 @@ namespace Creator {
                         }
                     }
                     file.AppendLine($"");
+                    file.AppendLine($"            /// <summary>");
+                    file.AppendLine($"            /// 按照键进行值设置");
+                    file.AppendLine($"            /// </summary>");
+                    file.AppendLine($"            /// <param name=\"key\">键</param>");
+                    file.AppendLine($"            /// <param name=\"value\">值</param>");
+                    file.AppendLine($"            protected override void OnSetValue(string key, string value) {{");
+                    file.AppendLine($"                switch (key) {{");
+                    file.AppendLine($"                    case \"ID\": base.Row[\"ID\"] = value; break;");
+                    foreach (var field in fields) {
+                        string fieldName = field.Attr["name"];
+                        file.AppendLine($"                    case \"{fieldName}\": base.Row[\"{fieldName}\"] = value; break;");
+                    }
+                    file.AppendLine($"                    default: base.OnSetValue(key, value); break;");
+                    file.AppendLine($"                }}");
+                    file.AppendLine($"            }}");
+                    file.AppendLine($"");
 
                     file.AppendLine($"        }}");
                     file.AppendLine($"");
@@ -204,7 +220,16 @@ namespace Creator {
                     file.AppendLine($"        /// 创建一个行数据操作器");
                     file.AppendLine($"        /// </summary>");
                     file.AppendLine($"        /// <param name=\"row\">行数据对象</param>");
-                    file.AppendLine($"        protected override RowOperator OnRowerCreate(dpz2.db.Row row) {{");
+                    file.AppendLine($"        protected override dpz2.db.RowOperator OnRowerCreate(dpz2.db.Row row) {{");
+                    file.AppendLine($"            return new RowOperator(row);");
+                    file.AppendLine($"        }}");
+                    file.AppendLine($"");
+                    file.AppendLine($"        /// <summary>");
+                    file.AppendLine($"        /// 创建一个行数据操作器");
+                    file.AppendLine($"        /// </summary>");
+                    file.AppendLine($"        /// <param name=\"row\">行数据对象</param>");
+                    file.AppendLine($"        public new RowOperator Rower(dpz2.db.Row row = null) {{");
+                    file.AppendLine($"            if (row == null) row = new dpz2.db.Row();");
                     file.AppendLine($"            return new RowOperator(row);");
                     file.AppendLine($"        }}");
                     file.AppendLine($"");
