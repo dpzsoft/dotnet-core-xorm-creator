@@ -177,21 +177,19 @@ namespace Creator {
                     file.AppendLine($"        /// <summary>");
                     file.AppendLine($"        /// 根据名称获取表格定义");
                     file.AppendLine($"        /// </summary>");
-                    file.AppendLine($"        public dpz2.db.OrmTable this[string name] {{");
-                    file.AppendLine($"            get {{");
-                    file.AppendLine($"                switch (name) {{");
+                    file.AppendLine($"        protected override dpz2.db.OrmTable OnGetTable(string name) {{");
+                    file.AppendLine($"            switch (name) {{");
                     file.AppendLine($"");
                     foreach (var platform in platforms) {
                         // 获取所有的table
                         var tables = platform.GetNodesByName("table", false);
                         foreach (var table in tables) {
                             string tableName = table.Attr["name"];
-                            file.AppendLine($"                    case \"{tableName}\": return this.{tableName};");
+                            file.AppendLine($"                case \"{tableName}\": return this.{tableName};");
                         }
 
                     }
-                    file.AppendLine($"                    default: throw new Exception(\"未找到对应表定义\");");
-                    file.AppendLine($"                }}");
+                    file.AppendLine($"                default: throw new Exception(\"未找到对应表定义\");");
                     file.AppendLine($"            }}");
                     file.AppendLine($"        }}");
                     file.AppendLine($"");
