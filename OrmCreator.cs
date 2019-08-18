@@ -204,8 +204,7 @@ namespace Creator {
                     file.AppendLine($"        /// 创建一个行数据操作器");
                     file.AppendLine($"        /// </summary>");
                     file.AppendLine($"        /// <param name=\"row\">行数据对象</param>");
-                    file.AppendLine($"        public RowOperator Rower(dpz2.db.Row row = null) {{");
-                    file.AppendLine($"            if (row == null) row = new dpz2.db.Row();");
+                    file.AppendLine($"        protected override RowOperator OnRowerCreate(dpz2.db.Row row) {{");
                     file.AppendLine($"            return new RowOperator(row);");
                     file.AppendLine($"        }}");
                     file.AppendLine($"");
@@ -215,6 +214,7 @@ namespace Creator {
                     file.AppendLine($"        /// <param name=\"name\">字段名称</param>");
                     file.AppendLine($"        protected override dpz2.db.SqlUnits.TableField OnGetField(string name) {{");
                     file.AppendLine($"            switch (name) {{");
+                    file.AppendLine($"                case \"ID\": return this.ID;");
                     foreach (var field in fields) {
                         string fieldName = field.Attr["name"];
                         file.AppendLine($"                case \"{fieldName}\": return this.{fieldName};");
